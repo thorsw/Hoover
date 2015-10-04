@@ -45,18 +45,50 @@ public class HooverRestService {
 	}
 
 	@GET
-	@Path("left")
+	@Path("leftForward")
 	@Produces({ MediaType.TEXT_PLAIN })
-	public String left() {
+	public String leftforward() {
 		getHoover().leftForward();
 		return "success";
 	}
 
 	@GET
-	@Path("right")
+	@Path("rightForward")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String rightForward() {
+		getHoover().rightForward();
+		return "success";
+	}
+
+	@GET
+	@Path("leftBackward")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String left() {
+		getHoover().leftBackward();
+		return "success";
+	}
+
+	@GET
+	@Path("rightBackward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String right() {
-		getHoover().rightForward();
+		getHoover().rightBackward();
+		return "success";
+	}
+
+	@GET
+	@Path("rotateLeft")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String rotateLeft() {
+		getHoover().rotateLeft();
+		return "success";
+	}
+
+	@GET
+	@Path("rotateRight")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String rotateRight() {
+		getHoover().rotateRight();
 		return "success";
 	}
 

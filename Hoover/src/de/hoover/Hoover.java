@@ -10,19 +10,16 @@ public class Hoover {
 	public void forward() {
 		engineLeft.forward();
 		engineRight.forward();
-		System.out.println("Forward");
 	}
 
 	public void stop() {
 		engineLeft.stop();
 		engineRight.stop();
-		System.out.println("Stop");
 	}
 
 	public void backward() {
 		engineLeft.backward();
 		engineRight.backward();
-		System.out.println("Backward");
 	}
 
 	public void leftForward() {
@@ -55,16 +52,8 @@ public class Hoover {
 		engineRight.backward();
 	}
 
-	protected Motor getEngineLeft() {
-		return engineLeft;
-	}
-
 	protected void setEngineLeft(Motor engineLeft) {
 		this.engineLeft = engineLeft;
-	}
-
-	protected Motor getEngineRight() {
-		return engineRight;
 	}
 
 	protected void setEngineRight(Motor engineRight) {

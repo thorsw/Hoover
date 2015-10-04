@@ -17,26 +17,20 @@ public class HooverFactory {
 
 	public static Hoover createHoover() {
 
-		Motor engineLeft = MotorFactory.createMotor(LEFT_FORWARD,
-				LEFT_BACKWARD, "Left Engine");
-		Motor engineRight = MotorFactory.createMotor(RIGHT_FORWARD,
-				RIGHT_BACKWARD, "Right Engine");
+		Motor engineLeft = MotorFactory.createMotor(LEFT_FORWARD, LEFT_BACKWARD, "Left Engine");
+		Motor engineRight = MotorFactory.createMotor(RIGHT_FORWARD, RIGHT_BACKWARD, "Right Engine");
 
 		Hoover hoover = new Hoover();
 		hoover.setEngineLeft(engineLeft);
 		hoover.setEngineRight(engineRight);
 
-		// LSM303 compass = new LSM303();
-		// compass.setDataListener(new MyLSM303Listener());
-		// compass.startReading();
-
 		return hoover;
 	}
 
 	public static PWMHoover createPWMHoover() {
-		
+
 		Gpio.wiringPiSetup();
-		
+
 		PWMMotor leftMotor = MotorFactory.createPWMMotor(0, 1);
 		PWMMotor rightMotor = MotorFactory.createPWMMotor(2, 3);
 

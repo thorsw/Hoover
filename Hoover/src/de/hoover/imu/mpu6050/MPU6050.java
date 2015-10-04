@@ -12,11 +12,13 @@ public class MPU6050 {
 	private I2CDevice mpu6050;
 	private byte[] sensorData;
 
-	private MPU6050Listener listener;
-
 	private static boolean verbose = true;
 
-	public void start() {
+	public MPU6050() {
+		init();
+	}
+
+	private void init() {
 		if (verbose)
 			System.out.println("Starting sensors reading:");
 		try {
@@ -31,31 +33,23 @@ public class MPU6050 {
 			if (verbose)
 				System.out.println("Connected to device. OK.");
 
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_PWR_MGMT_1,
-					Mpu6050RegisterValues.MPU6050_RA_PWR_MGMT_1);
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_SMPLRT_DIV,
-					Mpu6050RegisterValues.MPU6050_RA_SMPLRT_DIV);
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_CONFIG,
-					Mpu6050RegisterValues.MPU6050_RA_CONFIG);
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_GYRO_CONFIG,
-					Mpu6050RegisterValues.MPU6050_RA_GYRO_CONFIG_2000);
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_ACCEL_CONFIG,
-					Mpu6050RegisterValues.MPU6050_RA_ACCEL_CONFIG_16G);
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_INT_ENABLE,
-					Mpu6050RegisterValues.MPU6050_RA_INT_ENABLE);
-			mpu6050.write(Mpu6050Registers.MPU6050_RA_PWR_MGMT_2,
-					Mpu6050RegisterValues.MPU6050_RA_PWR_MGMT_2);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_PWR_MGMT_1, Mpu6050RegisterValues.MPU6050_RA_PWR_MGMT_1);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_SMPLRT_DIV, Mpu6050RegisterValues.MPU6050_RA_SMPLRT_DIV);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_CONFIG, Mpu6050RegisterValues.MPU6050_RA_CONFIG);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_GYRO_CONFIG, Mpu6050RegisterValues.MPU6050_RA_GYRO_CONFIG_2000);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_ACCEL_CONFIG, Mpu6050RegisterValues.MPU6050_RA_ACCEL_CONFIG_16G);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_INT_ENABLE, Mpu6050RegisterValues.MPU6050_RA_INT_ENABLE);
+			mpu6050.write(Mpu6050Registers.MPU6050_RA_PWR_MGMT_2, Mpu6050RegisterValues.MPU6050_RA_PWR_MGMT_2);
 
 			if (verbose)
 				System.out.println("Gyroscope OK.");
 
-			startReading();
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	private void startReading() {
+	public void startReading() {
 		Runnable task = new Runnable() {
 			@Override
 			public void run() {
@@ -73,12 +67,11 @@ public class MPU6050 {
 		new Thread(task).start();
 	}
 
-	private void readingSensors() throws IOException {
+	public MPU6050Data readingSensors() throws IOException {
 
 		sensorData = new byte[14];
 
-		mpu6050.read(Mpu6050Registers.MPU6050_RA_ACCEL_XOUT_H, sensorData, 0,
-				14);
+		mpu6050.read(Mpu6050Registers.MPU6050_RA_ACCEL_XOUT_H, sensorData, 0, 14);
 
 		int gyroX = gyro16(sensorData, 0);
 		int gyroY = gyro16(sensorData, 2);
@@ -88,7 +81,9 @@ public class MPU6050 {
 		int accY = gyro16(sensorData, 10);
 		int accZ = gyro16(sensorData, 12);
 
-		listener.dataChanged(gyroX, gyroY, gyroZ, accX, accY, accZ);
+		MPU6050Data data = new MPU6050Data(gyroX, gyroY, gyroZ, accX, accY, accZ);
+		return data;
+
 	}
 
 	private static int gyro16(byte[] list, int idx) {
@@ -96,14 +91,6 @@ public class MPU6050 {
 		int n = ((list[idx] & 0xFF) << 8) | (list[idx + 1] & 0xFF);
 		// 2's complement signed
 		return (n < 32768 ? n : n - 65536);
-	}
-
-	public MPU6050Listener getListener() {
-		return listener;
-	}
-
-	public void setListener(MPU6050Listener listener) {
-		this.listener = listener;
 	}
 
 }
