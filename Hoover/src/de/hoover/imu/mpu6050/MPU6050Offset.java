@@ -26,6 +26,14 @@ public class MPU6050Offset {
 		this.gyroY = gyroY;
 	}
 
+	public int getGyroZ() {
+		return gyroZ;
+	}
+
+	public void setGyroZ(int gyroZ) {
+		this.gyroZ = gyroZ;
+	}
+
 	public int getAccX() {
 		return accX;
 	}

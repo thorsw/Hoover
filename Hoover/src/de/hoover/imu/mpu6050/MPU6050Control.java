@@ -10,6 +10,8 @@ public class MPU6050Control {
 
 	private MPU6050 mpu6050;
 	private boolean polling = false;
+	private MPU6050Offset mpu6050Offset;
+	private MPU6050Calibration calibration = new MPU6050Calibration();
 
 	private Set<MPU6050Listener> listeners = new HashSet<MPU6050Listener>(1);
 
@@ -41,10 +43,14 @@ public class MPU6050Control {
 			@Override
 			public void run() {
 				while (polling) {
-
 					try {
 						MPU6050Data data = mpu6050.readingSensors();
-						fireDataChanged(data);
+						if (mpu6050Offset == null) {
+							
+
+						} else {
+							fireDataChanged(data);
+						}
 						Thread.sleep(POLL_INTERVAL);
 					} catch (IOException | InterruptedException e) {
 						e.printStackTrace();
