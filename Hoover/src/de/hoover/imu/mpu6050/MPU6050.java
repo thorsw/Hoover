@@ -10,15 +10,15 @@ public class MPU6050 {
 
 	private I2CBus bus;
 	private I2CDevice mpu6050;
-	private byte[] sensorData;
+	private byte[] sensorData = new byte[14];
 
 	private static boolean verbose = true;
 
-	public MPU6050() {
-		init();
+	public MPU6050(byte i2cAddress) {
+		init(i2cAddress);
 	}
 
-	private void init() {
+	private void init(byte i2cAddress) {
 		if (verbose)
 			System.out.println("Starting sensors reading:");
 		try {
@@ -49,27 +49,7 @@ public class MPU6050 {
 		}
 	}
 
-	public void startReading() {
-		Runnable task = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					while (true) {
-						readingSensors();
-						Thread.sleep(100);
-					}
-				} catch (IOException | InterruptedException ioe) {
-					System.err.println("Reading thread:");
-					ioe.printStackTrace();
-				}
-			}
-		};
-		new Thread(task).start();
-	}
-
 	public MPU6050Data readingSensors() throws IOException {
-
-		sensorData = new byte[14];
 
 		mpu6050.read(Mpu6050Registers.MPU6050_RA_ACCEL_XOUT_H, sensorData, 0, 14);
 

@@ -7,6 +7,8 @@ import com.pi4j.wiringpi.Gpio;
 import de.hoover.hardware.motor.Motor;
 import de.hoover.hardware.motor.MotorFactory;
 import de.hoover.hardware.motor.PWMMotor;
+import de.hoover.imu.mpu6050.MPU6050Control;
+import de.hoover.imu.mpu6050.MyMPU6050Listener;
 
 public class HooverFactory {
 
@@ -14,6 +16,8 @@ public class HooverFactory {
 	private final static Pin LEFT_BACKWARD = RaspiPin.GPIO_01;
 	private final static Pin RIGHT_FORWARD = RaspiPin.GPIO_02;
 	private final static Pin RIGHT_BACKWARD = RaspiPin.GPIO_03;
+
+	private final static byte MPU6050_I2C_ADDRESS = 0x68;
 
 	public static Hoover createHoover() {
 
@@ -23,6 +27,11 @@ public class HooverFactory {
 		Hoover hoover = new Hoover();
 		hoover.setEngineLeft(engineLeft);
 		hoover.setEngineRight(engineRight);
+
+		MPU6050Control mpu6050Control = new MPU6050Control(MPU6050_I2C_ADDRESS);
+		MyMPU6050Listener mpu6050Listener = new MyMPU6050Listener();
+		mpu6050Control.addMPU6050DataListener(mpu6050Listener);
+		mpu6050Control.startPolling();
 
 		return hoover;
 	}
