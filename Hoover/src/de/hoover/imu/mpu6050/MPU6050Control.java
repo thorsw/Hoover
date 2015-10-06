@@ -6,12 +6,13 @@ import java.util.Set;
 
 public class MPU6050Control {
 
-	private static int POLL_INTERVAL = 100;
+	private static final int POLL_DELAY = 100;
 
 	private MPU6050 mpu6050;
 	private boolean polling = false;
-	private MPU6050Offset mpu6050Offset;
-	private MPU6050Calibration calibration = new MPU6050Calibration();
+	private MPU6050Offset offset;
+
+	private MPU6050Calibration calibrater;
 
 	private Set<MPU6050Listener> listeners = new HashSet<MPU6050Listener>(1);
 
@@ -45,13 +46,15 @@ public class MPU6050Control {
 				while (polling) {
 					try {
 						MPU6050Data data = mpu6050.readingSensors();
-						if (mpu6050Offset == null) {
-							
-
+						if (calibrater.isComplete()) {
+							calibrater.addData(data);
+							offset = calibrater.getOffset();
+							System.out.print("Calibrating: " + offset.toString() + "\r");
 						} else {
+							data = calcCorrectedData(data);
 							fireDataChanged(data);
 						}
-						Thread.sleep(POLL_INTERVAL);
+						Thread.sleep(POLL_DELAY);
 					} catch (IOException | InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -91,6 +94,20 @@ public class MPU6050Control {
 			listener.dataChanged(data.getGyroX(), data.getGyroY(), data.getGyroZ(), data.getAccX(), data.getAccY(),
 					data.getAccZ());
 		}
+	}
+
+	private MPU6050Data calcCorrectedData(MPU6050Data rawData) {
+
+		int gyroX = rawData.getGyroX() - offset.getGyroX();
+		int gyroY = rawData.getGyroY() - offset.getGyroY();
+		int gyroZ = rawData.getGyroZ() - offset.getGyroZ();
+
+		int accX = rawData.getAccX() - offset.getAccX();
+		int accY = rawData.getAccY() - offset.getAccY();
+		int accZ = rawData.getAccZ() - offset.getAccZ();
+
+		MPU6050Data data = new MPU6050Data(gyroX, gyroY, gyroZ, accX, accY, accZ);
+		return data;
 	}
 
 }

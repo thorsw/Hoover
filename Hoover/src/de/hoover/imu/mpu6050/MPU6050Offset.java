@@ -58,4 +58,10 @@ public class MPU6050Offset {
 		this.accZ = accZ;
 	}
 
+	@Override
+	public String toString() {
+		return "MPU6050Offset [gyroX=" + gyroX + ", gyroY=" + gyroY + ", gyroZ=" + gyroZ + ", accX=" + accX + ", accY="
+				+ accY + ", accZ=" + accZ + "]";
+	}
+
 }
