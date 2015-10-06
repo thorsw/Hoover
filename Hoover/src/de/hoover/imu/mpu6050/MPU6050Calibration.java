@@ -13,7 +13,7 @@ public class MPU6050Calibration {
 	private int accZ;
 
 	private int calCount;
-	private boolean complete;
+	private boolean complete = false;
 
 	public void addData(MPU6050Data data) {
 

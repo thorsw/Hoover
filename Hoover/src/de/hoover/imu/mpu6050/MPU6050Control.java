@@ -12,7 +12,7 @@ public class MPU6050Control {
 	private boolean polling = false;
 	private MPU6050Offset offset;
 
-	private MPU6050Calibration calibrater;
+	private MPU6050Calibration calibrater = new MPU6050Calibration();
 
 	private Set<MPU6050Listener> listeners = new HashSet<MPU6050Listener>(1);
 
@@ -46,7 +46,7 @@ public class MPU6050Control {
 				while (polling) {
 					try {
 						MPU6050Data data = mpu6050.readingSensors();
-						if (calibrater.isComplete()) {
+						if (!calibrater.isComplete()) {
 							calibrater.addData(data);
 							offset = calibrater.getOffset();
 							System.out.print("Calibrating: " + offset.toString() + "\r");
@@ -60,7 +60,7 @@ public class MPU6050Control {
 					}
 				}
 			}
-		});
+		}).start();
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class MPU6050Control {
 	 * 
 	 * @param listener
 	 */
-	public void addMPU6050DataListener(MPU6050Listener listener) {
+	public void addDataListener(MPU6050Listener listener) {
 		listeners.add(listener);
 	}
 

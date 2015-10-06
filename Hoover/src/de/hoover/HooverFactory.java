@@ -30,7 +30,7 @@ public class HooverFactory {
 
 		MPU6050Control mpu6050Control = new MPU6050Control(MPU6050_I2C_ADDRESS);
 		MyMPU6050Listener mpu6050Listener = new MyMPU6050Listener();
-		mpu6050Control.addMPU6050DataListener(mpu6050Listener);
+		mpu6050Control.addDataListener(mpu6050Listener);
 		mpu6050Control.startPolling();
 
 		return hoover;

@@ -11,20 +11,13 @@ import de.hoover.HooverFactory;
 @Path("/")
 public class HooverRestService {
 
-	private static Hoover hoover;
-
-	private static Hoover getHoover() {
-		if (hoover == null) {
-			hoover = HooverFactory.createHoover();
-		}
-		return hoover;
-	}
+	private static Hoover hoover = HooverFactory.createHoover();
 
 	@GET
 	@Path("forward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String forward() {
-		getHoover().forward();
+		hoover.forward();
 		return "success";
 	}
 
@@ -32,7 +25,7 @@ public class HooverRestService {
 	@Path("backward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String backward() {
-		getHoover().backward();
+		hoover.backward();
 		return "success";
 	}
 
@@ -40,7 +33,7 @@ public class HooverRestService {
 	@Path("stop")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String stop() {
-		getHoover().stop();
+		hoover.stop();
 		return "success";
 	}
 
@@ -48,7 +41,7 @@ public class HooverRestService {
 	@Path("leftForward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String leftforward() {
-		getHoover().leftForward();
+		hoover.leftForward();
 		return "success";
 	}
 
@@ -56,7 +49,7 @@ public class HooverRestService {
 	@Path("rightForward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String rightForward() {
-		getHoover().rightForward();
+		hoover.rightForward();
 		return "success";
 	}
 
@@ -64,7 +57,7 @@ public class HooverRestService {
 	@Path("leftBackward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String left() {
-		getHoover().leftBackward();
+		hoover.leftBackward();
 		return "success";
 	}
 
@@ -72,7 +65,7 @@ public class HooverRestService {
 	@Path("rightBackward")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String right() {
-		getHoover().rightBackward();
+		hoover.rightBackward();
 		return "success";
 	}
 
@@ -80,7 +73,7 @@ public class HooverRestService {
 	@Path("rotateLeft")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String rotateLeft() {
-		getHoover().rotateLeft();
+		hoover.rotateLeft();
 		return "success";
 	}
 
@@ -88,7 +81,7 @@ public class HooverRestService {
 	@Path("rotateRight")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String rotateRight() {
-		getHoover().rotateRight();
+		hoover.rotateRight();
 		return "success";
 	}
 
