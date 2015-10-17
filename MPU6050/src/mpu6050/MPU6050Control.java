@@ -1,4 +1,4 @@
-package de.hoover.imu.mpu6050;
+package mpu6050;
 
 import java.io.IOException;
 import java.util.HashSet;

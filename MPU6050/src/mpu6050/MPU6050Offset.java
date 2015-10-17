@@ -1,4 +1,4 @@
-package de.hoover.imu.mpu6050;
+package mpu6050;
 
 /**
  * Calibrating: MPU6050Offset [gyroX=30, gyroY=-44, gyroZ=1947, accX=-30,
@@ -9,13 +9,13 @@ package de.hoover.imu.mpu6050;
  */
 public class MPU6050Offset {
 
-	private int gyroX = 30;
-	private int gyroY = -44;
-	private int gyroZ = 1947;
+	private int gyroX = 0;
+	private int gyroY = 0;
+	private int gyroZ = 0;
 
-	private int accX = -25;
-	private int accY = -7;
-	private int accZ = 37;
+	private int accX = 0;
+	private int accY = 0;
+	private int accZ = 0;
 
 	public int getGyroX() {
 		return gyroX;
